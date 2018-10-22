@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow name="Face1Flow" package="iristk.app.face1" 
+	initial="Idle" xmlns:this="iristk.app.face1.Face1Flow" xmlns="iristk.flow" 
+	xmlns:p="iristk.flow.param" xmlns:agent="iristk.situated.SystemAgentFlow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="iristk.flow flow.xsd iristk.situated.SystemAgentFlow SystemAgentFlow.xsd">
+	
+	<param name="agent" type="iristk.situated.SystemAgentFlow"/>
+	
+	<var name="system" type="iristk.situated.SystemAgent" value="agent.getSystemAgent()"/> 
+	 
+	<var name="number" type="Integer"/>
+	
+	<state id="Idle" extends="Dialog">
+		<onentry>
+			<if cond="system.hasUsers()">
+				<agent:attendRandom/>
+				<goto state="Greeting"/>
+			<else/>
+				<agent:attendNobody/>
+			</if>
+		</onentry>
+		<onevent name="sense.user.enter">
+			<agent:attend target="event:user"/>
+			<goto state="Greeting"/>
+		</onevent>
+	</state>
+	
+	<state id="Greeting" extends="Dialog">
+		<onentry>
+			<agent:say>Hi there! I'm hungry</agent:say>
+		</onentry>
+	</state>
+	
+	<state id="Dialog">
+		<onevent name="sense.user.speech.start" cond="system.isAttending(event) and eq(event:speakers, 1)">
+			<agent:gesture name="'smile'"/>
+		</onevent>
+		<onevent name="sense.user.speak">
+			<agent:say>Sorry, I didn't get that.</agent:say>
+			<reentry/>
+		</onevent>
+		<onevent name="sense.user.speak.side">
+			<agent:attendOther mode="'eyes'" />
+			<agent:say>I didn't ask you.</agent:say>
+			<agent:attendOther mode="'eyes'" />
+			<reentry/>
+		</onevent>
+		<onevent name="sense.user.speak.multi">
+			<agent:say>Don't speak at the same time.</agent:say>
+			<reentry/>
+		</onevent>
+		<onevent name="sense.user.silence">
+			<agent:say>Sorry, I didn't hear anything.</agent:say>
+			<reentry/>
+		</onevent>
+		<onevent name="sense.user.leave" cond="system.isAttending(event)">
+			<if cond="system.hasUsers()">
+				<agent:attendRandom/>
+			<else />
+				<goto state="Idle"/>
+			</if>
+		</onevent>
+		<onevent name="repeat">
+			<reentry/>
+		</onevent>
+	</state>
+	
+</flow>

@@ -1,0 +1,11 @@
+<package name="face1" version="0.1.0">
+	<run>
+		<command name="face1" class="iristk.app.face1.Face1System"/>
+	</run>
+	<provide>
+		<class type="iristk.furhat.skill.Skill" name="iristk.app.face1.Face1Skill" />
+	</provide>
+	<classpath>
+		<src path="src" output="bin"/>
+	</classpath>
+</package>

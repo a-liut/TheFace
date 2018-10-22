@@ -1,0 +1,8 @@
+<package name="guess" version="0.1.0">
+	<run>
+		<command name="guess" class="iristk.app.guess.GuessSystem"/>
+	</run>
+	<classpath>
+		<src path="src" output="bin"/>
+	</classpath>
+</package>

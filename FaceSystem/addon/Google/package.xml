@@ -1,0 +1,9 @@
+<package name="Google"  version="1.0">
+	<provide>
+		<class type="iristk.speech.RecognizerFactory" name="iristk.speech.google.GoogleRecognizerFactory"/>
+	</provide>
+	<classpath>
+		<src path="src" output="bin"/>
+		<lib path="lib/google-speech.jar"/>
+	</classpath>
+</package>
