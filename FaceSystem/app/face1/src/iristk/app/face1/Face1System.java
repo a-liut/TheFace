@@ -105,7 +105,7 @@ public class Face1System {
 		e0.setId("asd");
 		e0.setName("geture_event");
 		e0.put("event_name", "action.gesture");
-		e0.put("name", "smile");
+		e0.put("name", name);
 		return e0;
 	}
 
@@ -115,7 +115,7 @@ public class Face1System {
 		int cmd = 1;
 		Scanner in = new Scanner(System.in);
 		while (cmd != 0) {
-			cmd = in.nextInt();
+			cmd = Integer.valueOf(in.nextLine());
 			switch (cmd) {
 			case 1:
 				send(buildSpeakEvent("Hi everybody! I'm Elf!"));
@@ -127,9 +127,12 @@ public class Face1System {
 				send(buildGestureEvent("smile"));
 				break;
 			case 4:
-				send(buildGestureEvent("neutral"));
+				send(buildGestureEvent("emotion_neutral"));
 				break;
 			case 5:
+				send(buildGestureEvent("emotion_anger"));
+				break;
+			case 6:
 				String s = in.nextLine();
 				send(buildSpeakEvent(s));
 				break;
