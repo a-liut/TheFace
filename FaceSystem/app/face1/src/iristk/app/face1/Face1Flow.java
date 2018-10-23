@@ -387,31 +387,6 @@ public class Face1Flow extends iristk.flow.Flow {
 			} catch (Exception e) {
 				throw new FlowException(e, currentState, event, new XMLLocation(new File("E:\\Andrea\\Desktop\\SmartApplication\\TheFace\\FaceSystem\\app\\face1\\src\\iristk\\app\\face1\\Face1Flow.xml"), 63, 26));
 			}
-			// Line: 66
-			try {
-				count = getCount(204349222) + 1;
-				if (event.triggers("action.speech")) {
-					incrCount(204349222);
-					eventResult = EVENT_CONSUMED;
-					EXECUTION: {
-						iristk.situated.SystemAgentFlow.say state20 = agent.new say();
-						StringCreator string21 = new StringCreator();
-						string21.append("RECEIVED");
-						state20.setText(string21.toString());
-						if (!flowThread.callState(state20, new FlowEventInfo(currentState, event, new XMLLocation(new File("E:\\Andrea\\Desktop\\SmartApplication\\TheFace\\FaceSystem\\app\\face1\\src\\iristk\\app\\face1\\Face1Flow.xml"), 66, 33)))) {
-							eventResult = EVENT_ABORTED;
-							break EXECUTION;
-						}
-						// Line: 68
-						flowThread.reentryState(this, new FlowEventInfo(currentState, event, new XMLLocation(new File("E:\\Andrea\\Desktop\\SmartApplication\\TheFace\\FaceSystem\\app\\face1\\src\\iristk\\app\\face1\\Face1Flow.xml"), 68, 14)));
-						eventResult = EVENT_ABORTED;
-						break EXECUTION;
-					}
-					if (eventResult != EVENT_IGNORED) return eventResult;
-				}
-			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("E:\\Andrea\\Desktop\\SmartApplication\\TheFace\\FaceSystem\\app\\face1\\src\\iristk\\app\\face1\\Face1Flow.xml"), 66, 33));
-			}
 			eventResult = super.onFlowEvent(event);
 			if (eventResult != EVENT_IGNORED) return eventResult;
 			eventResult = callerHandlers(event);
