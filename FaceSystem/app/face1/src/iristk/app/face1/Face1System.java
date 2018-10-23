@@ -16,6 +16,9 @@ import iristk.speech.SpeechGrammarContext;
 import iristk.speech.Voice.Gender;
 import iristk.speech.windows.WindowsRecognizerFactory;
 import iristk.speech.windows.WindowsSynthesizer;
+import iristk.system.BrokerClient;
+import iristk.system.Event;
+import iristk.system.EventListener;
 import iristk.system.IrisUtils;
 import iristk.util.Language;
 import iristk.cfg.SRGSGrammar;
@@ -39,7 +42,7 @@ public class Face1System {
 		system.setupStereoMicrophones(new WindowsRecognizerFactory());
 		//system.setupKinectMicrophone(new KinectRecognizerFactory());
 				
-		//system.connectToBroker("furhat", "127.0.0.1");
+		system.connectToBroker("elfticket", "192.168.130.1");
 		system.setupFace(new WindowsSynthesizer(), Gender.FEMALE);
 		
 		system.addModule(new FlowModule(new Face1Flow(systemAgentFlow)));
@@ -51,6 +54,25 @@ public class Face1System {
 
 	public static void main(String[] args) throws Exception {
 		new Face1System();
+		/*
+		BrokerClient brokerClient = new BrokerClient("elfticket", "elfsystem", "192.168.130.1", 1932, new EventListener() {
+			
+			@Override
+			public void onEvent(Event event) {
+				// TODO Auto-generated method stub
+				System.out.println(event.toString());
+				
+				
+			}
+		});
+		brokerClient.connect();
+		
+		Event e = new Event();
+		e.setId("asd");
+		e.setName("name");
+		e.put("event_name", "action.speech");
+		brokerClient.send(e);
+		*/
 	}
 
 }
