@@ -64,85 +64,9 @@ public class Face1System {
 		system.sendStartSignal();
 	}
 
-	private static void send(Event e) {
-		try {
-
-			BrokerClient brokerClient = new BrokerClient("elfticket", "elfsystem", "192.168.130.1", 1932,
-					new EventListener() {
-
-						@Override
-						public void onEvent(Event event) {
-							// TODO Auto-generated method stub
-							System.out.println(event.toString());
-
-						}
-					});
-			brokerClient.connect();
-
-			System.out.println("Sending event");
-			System.out.println(e.get("event_name"));
-
-			brokerClient.send(e);
-
-			brokerClient.close();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	private static Event buildSpeakEvent(String name) {
-		Event e = new Event();
-		e.setId("asd");
-		e.setName("speech_event");
-		e.put("event_name", "action.speech");
-		e.put("text", name);
-		e.put("display", name);
-		return e;
-	}
-	
-	private static Event buildGestureEvent(String name) {
-		Event e0 = new Event();
-		e0.setId("asd");
-		e0.setName("geture_event");
-		e0.put("event_name", "action.gesture");
-		e0.put("name", name);
-		return e0;
-	}
-
 	public static void main(String[] args) throws Exception {
 		new Face1System();
-
-		int cmd = 1;
-		Scanner in = new Scanner(System.in);
-		while (cmd != 0) {
-			cmd = Integer.valueOf(in.nextLine());
-			switch (cmd) {
-			case 1:
-				send(buildSpeakEvent("Hi everybody! I'm Elf!"));
-				break;
-			case 2:
-				send(buildSpeakEvent("I'm supposed to do lot of things!"));
-				break;
-			case 3:
-				send(buildGestureEvent("smile"));
-				break;
-			case 4:
-				send(buildGestureEvent("emotion_neutral"));
-				break;
-			case 5:
-				send(buildGestureEvent("emotion_anger"));
-				break;
-			case 6:
-				String s = in.nextLine();
-				send(buildSpeakEvent(s));
-				break;
-			case 0:
-				break;
-			}
-		}
-		in.close();
 		
-		System.out.println("Bye!");
+		(new TestThread()).start();
 	}
-
 }
