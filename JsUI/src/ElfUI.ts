@@ -1,4 +1,4 @@
-import * as emotion from './emotion';
+import * as emotion from './Emotion';
 
 export abstract class ElfUI {
 	
