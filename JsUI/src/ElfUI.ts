@@ -1,30 +1,55 @@
-import * as emotion from './Emotion';
+import * as Emotion from './Emotion';
+import * as ElfUIEvent from './ElfUIEvent';
+import * as EventReader from './EventReader';
 
-export abstract class ElfUI {
+export abstract class ElfUI implements EventReader.IEventListener {
+
+	private eventReader: EventReader.BaseEventReader;
 	
-	constructor() {
-		// code...
+	constructor(protected root: HTMLElement) {
+		this.eventReader = new EventReader.VoidReader();
 	}
 
-	abstract onEmotionChanged(e: emotion.Emotion): void;
-	abstract onContentChanged(e: ElfUIEvent): void;
+	public setEventReader(reader: EventReader.BaseEventReader) {
+		this.eventReader = reader;
+		this.eventReader.registerEventListener(this)
+	}
+
+	onEvent(e:ElfUIEvent.ElfUIEvent) {
+		let emotion = e.getAny(ElfUIEvent.KEY_EMOTION) as Emotion.Emotion;
+		if(emotion) {
+			this.onEmotionChanged(e.getAny(ElfUIEvent.KEY_EMOTION) as Emotion.Emotion);
+		}
+		let content = e.getAny(ElfUIEvent.KEY_CONTENT);
+		if(content) {
+			this.onContentChanged(content);
+		}
+	}
+
+	abstract onEmotionChanged(e: Emotion.Emotion): void;
+	abstract onContentChanged(e: ElfUIEvent.ElfUIEvent): void;
+	abstract getTemplate(): string;
 }
 
-export class ElfUIEvent {
-	private data = {};
-	
-	constructor() {
+export class Builder {
+	private reader : EventReader.BaseEventReader = null;
+
+	constructor(private factory: ElfUIFactory) {}
+
+	public setEventReader(reader: EventReader.BaseEventReader) {
+		this.reader = reader;
+	}
+
+	public build() {
+		let ui = this.factory.create();
+
+		ui.setEventReader(this.reader);
 		
+		return ui;
 	}
 
-	putString(key: string, s: string) {
-		this.data[key] = s;
-	}
+}
 
-	putArray(key: string, a: Array<string>) {
-		this.data[key] = a;
-	}
-
-	readonly KEY_EMOTION: string = "key_emotion"
-	readonly KEY_CONTENT: string = "key_event"
+export interface ElfUIFactory {
+	create(): ElfUI;
 }

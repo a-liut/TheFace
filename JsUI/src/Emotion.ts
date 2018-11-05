@@ -40,19 +40,3 @@ export class Emotion implements IEmotion {
 
 
 }
-
-/*
- class NameEmotion implements IEmotion {
-
- 	constructor(private name: string) {
-
- 	}
- 	public getColor(): string {
- 		if(this.name === "aytan") {
- 			return "#FFF"
- 		}
- 		return "#000"
- 	}
- }
-
- */
