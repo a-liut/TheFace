@@ -1,6 +1,6 @@
-import * as ElfUI from './ElfUI';
-import * as Emotion from './Emotion';
-import * as ElfUIEvent from './ElfUIEvent';
+import * as ElfUI from '../ElfUI';
+import * as Emotion from '../../emotion/Emotion';
+import * as ElfUIEvent from '../event/ElfUIEvent';
 
 export class ElfColorfulUI extends ElfUI.ElfUI {
 

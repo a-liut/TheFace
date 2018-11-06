@@ -1,18 +1,16 @@
-
 export interface IEmotion {
 	getColor(): string
 }
 
 export class Emotion implements IEmotion {
-	color: string;
+	private color: string;
 
 	constructor(private x: number, private y: number) {
 		this.color = this.getColorFromCoord(x, y);
 	}
 
 	private getColorFromCoord(x: number, y: number): string {
-
-		let angle = Math.atan2(x, y)*180.0/Math.PI;
+		let angle = Math.atan2(x, y) * 180.0 / Math.PI;
 
 		 if(angle == 0)
 		 	return '#FF0000' //red angree
@@ -35,8 +33,6 @@ export class Emotion implements IEmotion {
 	}
 
 	public getColor(): string {
-		return this.getColorFromCoord(this.x, this.y);
+		return this.color;
 	}
-
-
 }

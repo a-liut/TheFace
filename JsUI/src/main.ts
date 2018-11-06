@@ -1,8 +1,8 @@
-import * as ElfUI from './ElfUI';
-import * as ElfColorfulUI from './ElfColorfulUI';
-import * as EventReader from './EventReader'
-import * as Emotion from './Emotion';
-import * as ElfUIEvent from './ElfUIEvent';
+import * as ElfUI from './ui/ElfUI';
+import * as ElfColorfulUI from './ui/colorful/ElfColorfulUI';
+import * as EventReader from './reader/EventReader'
+import * as Emotion from './emotion/Emotion';
+import * as ElfUIEvent from './ui/event/ElfUIEvent';
 import * as Test from './Test'
 
 let elem = document.getElementById("content");

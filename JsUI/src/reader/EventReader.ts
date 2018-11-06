@@ -1,4 +1,4 @@
-import * as ElfUIEvents from './ElfUIEvent';
+import * as ElfUIEvents from '../ui/event/ElfUIEvent';
 
 export interface IEventListener {
 	onEvent(event: ElfUIEvents.ElfUIEvent): void;

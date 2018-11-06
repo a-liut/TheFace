@@ -1,6 +1,6 @@
-import * as Emotion from './Emotion';
-import * as ElfUIEvent from './ElfUIEvent';
-import * as EventReader from './EventReader';
+import * as Emotion from '../emotion/Emotion';
+import * as ElfUIEvent from './event/ElfUIEvent';
+import * as EventReader from '../reader/EventReader';
 
 export abstract class ElfUI implements EventReader.IEventListener {
 
