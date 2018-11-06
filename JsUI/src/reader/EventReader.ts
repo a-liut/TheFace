@@ -10,6 +10,6 @@ export abstract class BaseEventReader {
 	public registerEventListener(listener: IEventListener): void {
 		this.listener = listener;
 	};
-}
 
-export class VoidReader extends BaseEventReader {}
+	abstract start(): void;
+}
