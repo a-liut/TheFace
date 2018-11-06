@@ -13,10 +13,9 @@ let factory = new ElfColorfulUI.ElfColorfulUIFactory(elem);
 // let reader = new Test.TestEventReader(1000);
 let reader = new KBEventReader.KBEventReader();
 
-let uiBuilder = new ElfUI.Builder(factory);
-uiBuilder.setEventReader(reader);
-
-let ui = uiBuilder.build();
+let ui = new ElfUI.Builder(factory)
+				.setEventReader(reader)
+				.build();
 
 reader.start();
 

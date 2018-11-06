@@ -43,8 +43,9 @@ export class Builder {
 
 	constructor(private factory: ElfUIFactory) {}
 
-	public setEventReader(reader: EventReader.BaseEventReader) {
+	public setEventReader(reader: EventReader.BaseEventReader): Builder {
 		this.reader = reader;
+		return this;
 	}
 
 	public build() {
