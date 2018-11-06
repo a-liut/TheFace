@@ -2,14 +2,14 @@ import * as KBEventReader from './KBEventReader';
 
 export class MessageBuilder {
 	private method: string;
-	private params = {};
+	private params: object = {};
 
 	public setMethod(op: KBEventReader.KB_OP): MessageBuilder {
 		this.method = op;
 		return this;
 	}
 
-	public addParam(key: string, value: any): MessageBuilder {
+	public addParam(key: KBEventReader.PARAMS, value: any): MessageBuilder {
 		this.params[key] = value;
 		return this;
 	}

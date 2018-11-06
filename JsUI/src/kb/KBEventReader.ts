@@ -46,15 +46,15 @@ export class KBEventReader extends EventReader.BaseEventReader {
 						// DEBUG: Add some facts..
 						let builder = new Message.MessageBuilder()
 											.setMethod(KB_OP.ADD_FACT)
-											.addParam('idSource', this.sessionId)
-											.addParam('infoSum', 'rdf')
-											.addParam('TTL', 3)
-											.addParam('reliability', 90)
-											.addParam('revisioning', false);
+											.addParam(PARAMS.ID_SOURCE, this.sessionId)
+											.addParam(PARAMS.INFO_SUM, 'rdf')
+											.addParam(PARAMS.TTL, 3)
+											.addParam(PARAMS.RELIABILITY, 90)
+											.addParam(PARAMS.REVISIONING, false);
 
-						let m1 = builder.addParam('jsonFact', { relation: 'teaches', subject: 'Gervasi', object: 'SmartApplication' }).build();
-						let m2 = builder.addParam('jsonFact', { relation: 'teaches', subject: 'Gervasi', object: 'SAM' }).build();
-						let m3 = builder.addParam('jsonFact', { relation: 'teaches', subject: 'Bruni', object: 'PSC' }).build();
+						let m1 = builder.addParam(PARAMS.JSON_FACT, { relation: 'teaches', subject: 'Gervasi', object: 'SmartApplication' }).build();
+						let m2 = builder.addParam(PARAMS.JSON_FACT, { relation: 'teaches', subject: 'Gervasi', object: 'SAM' }).build();
+						let m3 = builder.addParam(PARAMS.JSON_FACT, { relation: 'teaches', subject: 'Bruni', object: 'PSC' }).build();
 
 						this.addFactKB(m1);
 						this.addFactKB(m2);
@@ -92,8 +92,8 @@ export class KBEventReader extends EventReader.BaseEventReader {
 	private subscribeKB(request: object): void {
 		let message = new Message.MessageBuilder()
 							.setMethod(KB_OP.SUBSCRIBE)
-							.addParam('idSource', this.sessionId)
-							.addParam('jsonFact', request)
+							.addParam(PARAMS.ID_SOURCE, this.sessionId)
+							.addParam(PARAMS.JSON_FACT, request)
 							.build()
 		this.socket.send(JSON.stringify(message));
 	}
@@ -108,4 +108,13 @@ export enum KB_OP {
 	ADD_FACT = "addFact",
 	QUERY_BIND = "queryBind",
 	SUBSCRIBE = "subscribe"
+}
+
+export enum PARAMS {
+	ID_SOURCE = "idSource",
+	INFO_SUM = "infoSum",
+	TTL = "ttl",
+	RELIABILITY = "reliability",
+	REVISIONING = "revisioning",
+	JSON_FACT = "jsonFact"
 }
