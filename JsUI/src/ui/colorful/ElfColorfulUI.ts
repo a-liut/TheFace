@@ -1,6 +1,49 @@
 import * as ElfUI from '../ElfUI';
 import * as Emotion from '../../emotion/Emotion';
 import * as ElfUIEvent from '../event/ElfUIEvent';
+import * as Content from '../../content/Content';
+
+class FooContent implements Content.Content {
+	constructor(private data: any) {}
+
+	public getData() {
+		return this.data;
+	}
+
+	render(): string {
+		return JSON.stringify(this.data);
+	}
+}
+
+class TextContent implements Content.Content {
+	constructor(private text: string) {}
+
+	render(): string {
+		return "<div>" + this.text + "</div>";
+	}
+}
+
+class ColorfulUIContentFactory implements Content.ContentFactory {
+	create(event: ElfUIEvent.ElfUIEvent): Array<Content.Content> {
+		let data = event.getAny(ElfUIEvent.KEY_CONTENT);
+
+		let contents = [];
+		for (var key in data) {
+			switch (key) {
+				case "text":
+					contents.push(new TextContent(data[key]));
+					break;
+				default:		
+					let d = {};
+					d[key] = data[key];
+					contents.push(new FooContent(d));		
+					break;
+			}
+		}
+
+		return contents;
+	}
+}
 
 export class ElfColorfulUI extends ElfUI.ElfUI {
 
@@ -10,25 +53,50 @@ export class ElfColorfulUI extends ElfUI.ElfUI {
 	private resourcePanel: Element;
 	private facePanel: Element;
 
+	private contentFactory: Content.ContentFactory;
+
 	constructor(rootElement: HTMLElement) {
 		super(rootElement);
 
-		rootElement.innerHTML = this.getTemplate();
+		this.contentFactory = new ColorfulUIContentFactory();
+	}
 
-		this.upperPanel = rootElement.getElementsByClassName("upper-panel")[0];
-		this.lowerPanel = rootElement.getElementsByClassName("lower-panel")[0];
-		this.textPanel = rootElement.getElementsByClassName("text-panel")[0];
-		this.resourcePanel = rootElement.getElementsByClassName("resource-panel")[0];
-		this.facePanel = rootElement.getElementsByClassName("face-panel")[0];
+	onCreateView(root: HTMLElement): void {
+		root.innerHTML = this.getTemplate();
+
+		this.upperPanel = root.getElementsByClassName("upper-panel")[0];
+		this.lowerPanel = root.getElementsByClassName("lower-panel")[0];
+
+		this.textPanel = root.getElementsByClassName("text-panel")[0];
+		this.resourcePanel = root.getElementsByClassName("resource-panel")[0];
+		this.facePanel = root.getElementsByClassName("face-panel")[0];
 	}
 
 	public onEmotionChanged(e: Emotion.Emotion): void {
 		console.log("onEmotionChanged", e);
 
-		this.root.style.backgroundColor = e.getColor();
+		this.getRootElement().style.backgroundColor = e.getColor();
 	}
-	public onContentChanged(e: ElfUIEvent.ElfUIEvent): void {
-		console.log("onContentChanged", e);
+	public onContentChanged(contents: Array<Content.Content>): void {
+		console.log("onContentChanged", contents);
+
+		let document = this.getRootElement().ownerDocument
+
+		this.resetView();
+
+		contents.map(content => {
+			let elem = document.createElement('div');
+			elem.innerHTML = content.render();
+			return {content: content, element: elem.firstChild};
+		}).map(pair => {
+			if(pair.content instanceof TextContent) {
+				this.textPanel.appendChild(pair.element);
+			} else if(pair.content instanceof FooContent) {
+				this.resourcePanel.appendChild(pair.element);
+			} else {
+				console.error("Pair discarded: no matching type.", pair);
+			}
+		})
 	}
 
 	public getTemplate(): string {
@@ -41,6 +109,21 @@ export class ElfColorfulUI extends ElfUI.ElfUI {
 				<div class="text-panel"></div>\
 			</div>\
 		</div>';
+	}
+
+	public getContentFactory(): Content.ContentFactory {
+		return this.contentFactory;
+	}
+
+	private resetView() {
+		this.clearPanel(this.resourcePanel);
+		this.clearPanel(this.textPanel);
+	}
+
+	private clearPanel(panel: Element) {
+		while(panel.firstChild) {
+			panel.removeChild(panel.firstChild);
+		}
 	}
 }
 

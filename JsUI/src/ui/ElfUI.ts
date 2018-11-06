@@ -1,13 +1,13 @@
 import * as Emotion from '../emotion/Emotion';
 import * as ElfUIEvent from './event/ElfUIEvent';
 import * as EventReader from '../reader/EventReader';
+import * as Content from '../content/Content';
 
 export abstract class ElfUI implements EventReader.IEventListener {
-
-	private eventReader: EventReader.BaseEventReader;
+	private eventReader: EventReader.BaseEventReader = null;
 	
-	constructor(protected root: HTMLElement) {
-		this.eventReader = new EventReader.VoidReader();
+	constructor(private root: HTMLElement) {
+		this.onCreateView(root);
 	}
 
 	public setEventReader(reader: EventReader.BaseEventReader) {
@@ -20,15 +20,22 @@ export abstract class ElfUI implements EventReader.IEventListener {
 		if(emotion) {
 			this.onEmotionChanged(e.getAny(ElfUIEvent.KEY_EMOTION) as Emotion.Emotion);
 		}
-		let content = e.getAny(ElfUIEvent.KEY_CONTENT);
-		if(content) {
-			this.onContentChanged(content);
+		let contents = this.getContentFactory().create(e);
+		if(contents) {
+			this.onContentChanged(contents);
 		}
 	}
 
+	protected getRootElement(): HTMLElement {
+		return this.root;
+	}
+
+	abstract onCreateView(root: HTMLElement): void;
+
 	abstract onEmotionChanged(e: Emotion.Emotion): void;
-	abstract onContentChanged(e: ElfUIEvent.ElfUIEvent): void;
+	abstract onContentChanged(contents: Array<Content.Content>): void;
 	abstract getTemplate(): string;
+	abstract getContentFactory(): Content.ContentFactory;
 }
 
 export class Builder {
@@ -47,7 +54,6 @@ export class Builder {
 		
 		return ui;
 	}
-
 }
 
 export interface ElfUIFactory {

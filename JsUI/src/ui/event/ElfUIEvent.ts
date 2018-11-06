@@ -1,4 +1,3 @@
-
 export class ElfUIEvent {
 	private data = {};
 	
