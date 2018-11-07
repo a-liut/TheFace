@@ -2,6 +2,7 @@ import * as ElfUI from '../ElfUI';
 import * as Emotion from '../../emotion/Emotion';
 import * as ElfUIEvent from '../event/ElfUIEvent';
 import * as Content from '../../content/Content';
+import * as Face from './face/Face';
 
 class FooContent implements Content.Content {
 	constructor(private data: any) {}
@@ -53,12 +54,10 @@ export class ElfColorfulUI extends ElfUI.ElfUI {
 	private resourcePanel: Element;
 	private facePanel: Element;
 
-	private contentFactory: Content.ContentFactory;
+	private face: Face.IFace;
 
-	constructor(rootElement: HTMLElement) {
+	constructor(rootElement: HTMLElement, private contentFactory: Content.ContentFactory = new ColorfulUIContentFactory()) {
 		super(rootElement);
-
-		this.contentFactory = new ColorfulUIContentFactory();
 	}
 
 	onCreateView(root: HTMLElement): void {
@@ -70,12 +69,16 @@ export class ElfColorfulUI extends ElfUI.ElfUI {
 		this.textPanel = root.getElementsByClassName("text-panel")[0];
 		this.resourcePanel = root.getElementsByClassName("resource-panel")[0];
 		this.facePanel = root.getElementsByClassName("face-panel")[0];
+
+		this.face = new Face.TestFace(this.facePanel as HTMLElement);
 	}
 
 	public onEmotionChanged(e: Emotion.Emotion): void {
 		console.log("onEmotionChanged", e);
 
 		this.getRootElement().style.backgroundColor = e.getColor();
+
+		this.face.setEmotion(e);
 	}
 	public onContentChanged(contents: Array<Content.Content>): void {
 		console.log("onContentChanged", contents);

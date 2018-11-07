@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: './src/main.ts',
@@ -19,7 +20,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   mode: 'development',
-  externals: {
-    ws: 'require(ws)'
-  }
+  plugins: [
+    new CopyWebpackPlugin([
+      { from: 'res', to: 'res' }, // Copy res folder
+    ])
+  ]
 };

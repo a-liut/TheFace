@@ -10,8 +10,8 @@ let elem = document.getElementById("content");
 
 let factory = new ElfColorfulUI.ElfColorfulUIFactory(elem);
 
-// let reader = new Test.TestEventReader(1000);
-let reader = new KBEventReader.KBEventReader();
+let reader = new Test.TestEventReader(1000);
+// let reader = new KBEventReader.KBEventReader();
 
 let ui = new ElfUI.Builder(factory)
 				.setEventReader(reader)

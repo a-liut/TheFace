@@ -5,16 +5,19 @@ export class ElfUIEvent {
 		
 	}
 
-	putString(key: string, s: string) {
+	putString(key: string, s: string): ElfUIEvent {
 		this.data[key] = s;
+		return this;
 	}
 
-	putArray(key: string, a: Array<string>) {
+	putArray(key: string, a: Array<string>): ElfUIEvent {
 		this.data[key] = a;
+		return this;
 	}
 
-	putAny(key: string, o: any) {
+	putAny(key: string, o: any): ElfUIEvent {
 		this.data[key] = o;
+		return this;
 	}
 
 	getString(key: string): string {
