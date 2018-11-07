@@ -1,5 +1,7 @@
 export interface IEmotion {
 	getColor(): string
+	getArousal(): number;
+	getValence(): number;
 }
 
 export class Emotion implements IEmotion {
@@ -30,6 +32,14 @@ export class Emotion implements IEmotion {
 		 	return '#CC33FF' //jasmin disgust
 		 else if(angle < 360)
 		 	return '#FF3366' //jasmin bored
+	}
+
+	public getArousal(): number {
+		return this.x;
+	}
+
+	public getValence(): number {
+		return this.y;
 	}
 
 	public getColor(): string {
